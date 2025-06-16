@@ -74,7 +74,8 @@ def countResult(
     bestModels = []
     for result in results:
         name, dictionary, func = result
-        if dictionary.get("delta") == minDelta:
+        delta = dictionary.get("delta", float("inf"))
+        if abs(delta - minDelta) < 1e-6:
             bestModels.append(result)
 
     print(f"Минимальное СКО: {minDelta}")
@@ -83,7 +84,7 @@ def countResult(
         for model in bestModels:
             name, dictionary, func = model
 
-            print(f"- {name}: (СКО: {dictionary.get('delta')})")
+            print(f"- {name}: (СКО: {dictionary.get('delta', float("inf")):.6f})")
     else:
         print("Решения не найдено")
 
