@@ -2,6 +2,7 @@ from typing import Callable, Dict, Tuple
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Dict, List
+from methods.fifthApprox import fifthApprox
 from methods.cubeApprox import cubeApprox
 from methods.exponentialApprox import exponentialApprox
 from methods.linearApprox import linealApprox
@@ -32,7 +33,7 @@ def drawFunctions(
     margin = 0.1 * (x_max - x_min)
     x_smooth = np.linspace(x_min - margin, x_max + margin, 500)
 
-    colors = ["blue", "green", "purple", "orange", "brown", "pink"]
+    colors = ["blue", "green", "purple", "orange", "brown", "pink", "black"]
 
     for i, res in enumerate(results):
         if not res:
@@ -78,7 +79,7 @@ def countResult(
         if abs(delta - minDelta) < 1e-6:
             bestModels.append(result)
 
-    print(f"Минимальное СКО: {minDelta}")
+    print(f"Минимальное СКО: {minDelta:.6f}")
     print("Лучшие модели:")
     if len(bestModels) != 0:
         for model in bestModels:
@@ -94,7 +95,6 @@ def main():
     if len(x) != len(y):
         print("ошибка ввода точек")
         return
-    print("--- Вычисления ---")
 
     results = [
         squareApprox(x, y),
@@ -103,6 +103,7 @@ def main():
         powerApprox(x, y),
         exponentialApprox(x, y),
         logApprox(x, y),
+        fifthApprox(x, y),
     ]
 
     valid_results = [res for res in results if res]

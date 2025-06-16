@@ -2,23 +2,18 @@ from typing import Callable, Tuple
 import numpy as np
 
 from approximation_characteristics import get_approximation_characteristics
+from helpers.interpretationR import interpretR
 from least_squares_method import least_squares_method
 
 
-def logApprox(
+def fifthApprox(
     x: np.ndarray, y: np.ndarray
 ) -> Tuple[str, dict[str, float], Callable[[np.ndarray], np.ndarray]] | None:
     print("")
-    print("--- Логарифмическая ---")
-
-    if np.any(x <= 0):
-        print(
-            "Ошибка: x содержит неположительные значения. Логарифмирование невозможно."
-        )
-        return None
+    print("--- Пятая степень ---")
 
     try:
-        solution = least_squares_method(np.log(x), y, 1)
+        solution = least_squares_method(x, y, 5)
     except np.linalg.LinAlgError:
         print("Система уравнений вырождена, решение не существует")
         return None
@@ -27,21 +22,16 @@ def logApprox(
         return None
 
     def solution_to_string():
-        # y=a*ln(x) + b
-
-        b, a = solution
-
-        return f"y = {a:.6f} * lnx + {b:.6f}"
+        a0, a1, a2, a3, a4, a5 = solution
+        return f"y = {a5:.6f}x^5 + {a4:.6f}x^4 + {a3:.6f}x³ + {a2:.6f}x² + {a1:.6f}x + {a0:.6f}"
 
     def func(x: np.ndarray):
-        b, a = solution
-
-        return a * np.log(x) + b
+        a0, a1, a2, a3, a4, a5 = solution
+        return a0 + a1 * x + a2 * x**2 + a3 * x**3 + a4 * x**4 + a5 * x**5
 
     print(f"Формула: {solution_to_string()}")
     res = get_approximation_characteristics(x, y, func)
-
     if res is not None:
-        return ("Логарифмическая", res, func)
+        return ("Пятая степень", res, func)
     else:
         return None
