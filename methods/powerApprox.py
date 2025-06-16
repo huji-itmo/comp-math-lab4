@@ -12,6 +12,12 @@ def powerApprox(
     print("")
     print("--- Степенная ---")
 
+    if np.any(x <= 0) or np.any(y <= 0):
+        print(
+            "Ошибка: x или y содержит неположительные значения. Логарифмирование невозможно."
+        )
+        return None
+
     try:
         solution = least_squares_method(np.log(x), np.log(y), 1)
     except np.linalg.LinAlgError:

@@ -12,6 +12,12 @@ def exponentialApprox(
     print("")
     print("--- Экспоненциальная ---")
 
+    if np.any(y <= 0):
+        print(
+            "Ошибка: y содержит неположительные значения. Логарифмирование невозможно."
+        )
+        return None
+
     try:
         solution = least_squares_method(x, np.log(y), 1)
     except np.linalg.LinAlgError:

@@ -11,6 +11,12 @@ def logApprox(
     print("")
     print("--- Логарифмическая ---")
 
+    if np.any(x <= 0):
+        print(
+            "Ошибка: x содержит неположительные значения. Логарифмирование невозможно."
+        )
+        return None
+
     try:
         solution = least_squares_method(np.log(x), y, 1)
     except np.linalg.LinAlgError:
